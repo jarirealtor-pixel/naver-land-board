@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# 크롤러 전용 (배포 안 함)
+crawler.py
+db.py
+dashboard.py
+report.py
+실행_윈도우.bat
+보드생성.bat
+서버시작.bat
+보드배포.bat
+내지역.json
+사용법.md
+GitHub_설정.md
+
+# 데이터
+매물DB.sqlite
+결과/
+디버그/
+
+# 시스템
+.DS_Store
+Thumbs.db
+desktop.ini
