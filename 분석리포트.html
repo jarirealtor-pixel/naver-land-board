@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>매물분석리포트</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+:root{--bg:#0f1117;--sf:#1a1d27;--sf2:#242836;--bd:#2e3345;--tx:#e8eaed;--tx2:#9aa0b0;--ac:#4f8cff;--nw:#22c55e;--ch:#f59e0b;--rm:#ef4444}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--sf);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100}
+.hdr h1{font-size:18px;font-weight:700}.hdr h1 span{color:var(--ac)}
+.hdr a{background:var(--nw);color:#fff;padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:700}
+.wrap{max-width:1400px;margin:0 auto;padding:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.card{background:var(--sf);border-radius:10px;padding:16px;text-align:center}
+.card .n{font-size:28px;font-weight:900}.card .l{font-size:12px;color:var(--tx2);margin-top:4px}
+.card.nw .n{color:var(--nw)}.card.ch .n{color:var(--ch)}.card.rm .n{color:var(--rm)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:900px){.row{grid-template-columns:1fr}}
+.panel{background:var(--sf);border-radius:10px;padding:20px}
+.panel h2{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--ac)}
+.panel canvas{max-height:300px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--bd);color:var(--tx2);font-weight:500}
+td{padding:7px 10px;border-bottom:1px solid var(--bd)}
+tr:hover{background:var(--sf2)}
+.meta{font-size:12px;color:var(--tx2);text-align:center;padding:20px}
+</style></head><body>
+
+<div class="hdr">
+<h1>📊 매물 <span>분석리포트</span></h1>
+<div style="display:flex;align-items:center;gap:12px;">
+<a href="매물지도보드.html">🗺️ 지도보드</a>
+<span style="font-size:12px;color:var(--tx2)">2026-04-15 17:15</span>
+</div></div>
+
+<div class="wrap">
+
+<div class="cards">
+<div class="card"><div class="n">201</div><div class="l">활성 매물</div></div>
+<div class="card nw"><div class="n">126</div><div class="l">🆕 오늘 신규</div></div>
+<div class="card ch"><div class="n">0</div><div class="l">💰 가격변동</div></div>
+<div class="card rm"><div class="n">0</div><div class="l">❌ 삭제</div></div>
+<div class="card"><div class="n">49억 5,294만</div><div class="l">평균 매매가</div></div>
+<div class="card"><div class="n">3</div><div class="l">수집 지역</div></div>
+</div>
+
+<div class="row">
+<div class="panel"><h2>📍 지역별 매물 수</h2><canvas id="c1"></canvas></div>
+<div class="panel"><h2>🏢 매물종류별 분포</h2><canvas id="c2"></canvas></div>
+</div>
+
+<div class="row">
+<div class="panel"><h2>💰 가격대별 분포</h2><canvas id="c3"></canvas></div>
+<div class="panel"><h2>📐 대지면적별 분포</h2><canvas id="c4"></canvas></div>
+</div>
+
+<div class="row">
+<div class="panel" style="grid-column:1/-1"><h2>📍 지역별 대지 평당가 비교 (만원/평)</h2><canvas id="c5"></canvas></div>
+</div>
+
+<div class="row">
+<div class="panel"><h2>💰 최근 가격변동 매물</h2>
+<div style="color:var(--tx2);padding:20px;text-align:center">가격변동 없음</div>
+</div>
+<div class="panel"><h2>🆕 오늘 신규 매물</h2>
+<table><tr><th>종류</th><th>가격</th><th>대지</th><th>평당가</th><th>지역</th><th>특징</th></tr><tr><td>토지</td><td>23억</td><td>195평</td><td>1,178만평</td><td>처인</td><td>초특급 수리, 내부상태 매우 우수, 전망 뛰어남</td></tr><tr><td>지식산업센터</td><td>45억</td><td>564평</td><td>798만평</td><td>처인</td><td>삼성 반도체 수혜지역, 토지와 건물 매매</td></tr><tr><td>Z00</td><td>22억</td><td>560평</td><td>392만평</td><td>처인</td><td>급매,저수지뷰,조망최고,28개실,최고시설,용도변경,증축</td></tr><tr><td>지식산업센터</td><td>47억 5,000만</td><td>928평</td><td>511만평</td><td>처인</td><td>이동저수지 뷰 베이커리 다이닝 카페 매매</td></tr><tr><td>지식산업센터</td><td>32억</td><td>584평</td><td>548만평</td><td>처인</td><td>-</td></tr><tr><td>Z00</td><td>44억 9,000만</td><td>312평</td><td>1,438만평</td><td>처인</td><td>용인테크노벨리 일반산단 내, 정비공장, 삼성반도체 인근</td></tr><tr><td>토지</td><td>18억</td><td>195평</td><td>922만평</td><td>처인</td><td>라센트라 단독형, 골프이용권 2매포함, 필드 조망권 좋</td></tr><tr><td>토지</td><td>16억 5,000만</td><td>153평</td><td>1,078만평</td><td>처인</td><td>라센트라 골프빌리지 타운하우스, 주중이용권 두장 포함</td></tr><tr><td>지식산업센터</td><td>80억</td><td>903평</td><td>885만평</td><td>처인</td><td>삼성반도체예정지인근,주거용오피스건축가능,현재상가7점포,</td></tr><tr><td>토지</td><td>17억</td><td>153평</td><td>1,111만평</td><td>처인</td><td>라센트라 골프빌리지 타운하우스, 주중이용권 두장 포함</td></tr><tr><td>지식산업센터</td><td>24억 5,000만</td><td>834평</td><td>293만평</td><td>처인</td><td>급,위치좋은 근생으로변경,식당,카페가능,팬션,카라반,최</td></tr><tr><td>건물</td><td>60억</td><td>500평</td><td>1,199만평</td><td>처인</td><td>용인 반도체크러스트호재 인근 임대 미래투자용 대지 건물</td></tr><tr><td>지식산업센터</td><td>60억</td><td>747평</td><td>803만평</td><td>처인</td><td>삼성반도체 220만평 이동읍 개발호재 건물 통매</td></tr><tr><td>지식산업센터</td><td>15억</td><td>379평</td><td>395만평</td><td>처인</td><td>이동저수지인근  신축 음식점 건물 </td></tr><tr><td>건물</td><td>20억</td><td>285평</td><td>701만평</td><td>처인</td><td>삼성 반도체 국가산단과 용인시를 잇는 핵심 축  상가건</td></tr></table>
+</div>
+</div>
+
+<div class="panel" style="margin-bottom:24px"><h2>🕐 최근 수집 이력</h2>
+<table><tr><th>시각</th><th>지역</th><th>수집</th><th>신규</th><th>변동</th><th>삭제</th></tr><tr><td>2026-04-15 15:05</td><td>남사읍</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 14:01</td><td>처인</td><td>26</td><td>26</td><td>0</td><td>0</td></tr><tr><td>2026-04-13 12:13</td><td>포곡읍</td><td>75</td><td>0</td><td>0</td><td>0</td></tr><tr><td>2026-04-13 12:08</td><td>포곡읍</td><td>75</td><td>75</td><td>0</td><td>0</td></tr></table>
+</div>
+
+<div class="meta">매물DB.sqlite 기준 · 크롤링 후 이 리포트를 재생성하면 최신 데이터로 갱신됩니다</div>
+</div>
+
+<script>
+const CO={responsive:true,plugins:{legend:{display:false}}};
+const CC=['#4f8cff','#22c55e','#f59e0b','#ef4444','#a78bfa','#ec4899','#06b6d4','#84cc16','#f97316','#6366f1'];
+
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:["남사읍", "포곡읍", "처인"],datasets:[{data:[100, 75, 26],backgroundColor:CC}]},options:{...CO,indexAxis:'y'}});
+
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:["공장/창고", "지식산업센터", "토지", "Z00", "건물", "아파트"],datasets:[{data:[173, 14, 5, 4, 3, 2],backgroundColor:CC}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{color:'#e8eaed',font:{size:12}}}}}});
+
+new Chart(document.getElementById('c3'),{type:'bar',data:{labels:["5억 미만", "5~10억", "10~20억", "20~50억", "50~100억", "100억 이상"],datasets:[{data:[2, 13, 38, 73, 59, 16],backgroundColor:'#4f8cff'}]},options:CO});
+
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:["100평 미만", "100~300평", "300~500평", "500~1000평", "1000~3000평", "3000평 이상"],datasets:[{data:[2, 30, 30, 61, 65, 9],backgroundColor:'#22c55e'}]},options:CO});
+
+new Chart(document.getElementById('c5'),{type:'bar',data:{labels:["남사읍", "포곡읍", "처인"],datasets:[{data:[4594627, 5210886, 7584446].map(v=>Math.round(v/10000)),backgroundColor:'#f59e0b'}]},options:{...CO,scales:{y:{title:{display:true,text:'만원/평',color:'#9aa0b0'}}}}});
+</script></body></html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>매물 관리</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#0f1117 0%,#1a1d27 100%);color:#e8eaed;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.wrap{max-width:500px;width:100%;text-align:center}
+h1{font-size:28px;font-weight:900;margin-bottom:8px}
+.sub{color:#9aa0b0;font-size:14px;margin-bottom:40px}
+.btns{display:flex;flex-direction:column;gap:16px}
+.btn{background:#1a1d27;border:1px solid #2e3345;border-radius:12px;padding:24px;text-decoration:none;color:inherit;transition:all .2s;display:flex;align-items:center;gap:16px;text-align:left}
+.btn:hover{background:#242836;border-color:#4f8cff;transform:translateY(-2px)}
+.ic{font-size:40px}
+.info .t{font-size:18px;font-weight:700;margin-bottom:4px}
+.info .d{font-size:13px;color:#9aa0b0}
+.ft{margin-top:40px;font-size:12px;color:#6b7280}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🏢 박가 매물 관리</h1>
+<div class="sub">공인중개사 박가 개인 업무용</div>
+<div class="btns">
+<a class="btn" href="매물지도보드.html">
+<div class="ic">🗺️</div>
+<div class="info">
+<div class="t">매물지도보드</div>
+<div class="d">지도 + 필터 + 네비게이션</div>
+</div>
+</a>
+<a class="btn" href="분석리포트.html">
+<div class="ic">📊</div>
+<div class="info">
+<div class="t">분석리포트</div>
+<div class="d">통계 + 차트 + 변동 이력</div>
+</div>
+</a>
+</div>
+<div class="ft" id="upd"></div>
+</div>
+<script>
+document.getElementById('upd').textContent='마지막 업데이트: '+new Date().toLocaleString('ko-KR');
+</script>
+</body>
+</html>
