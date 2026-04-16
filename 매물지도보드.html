@@ -97,7 +97,9 @@ function navi(type,dlat,dlng,dn){
   navigator.geolocation.getCurrentPosition(function(p){
     const sl=p.coords.latitude,sg=p.coords.longitude;
     if(type==='naver'){
-      location.href='nmap://route/car?slat='+sl+'&slng='+sg+'&sname='+encodeURIComponent('현재위치')+'&elat='+dlat+'&elng='+dlng+'&ename='+encodeURIComponent(dn);
+      // 네이버 route 스킴: slat/slng/sname(출발) + dlat/dlng/dname(도착) + appname 필수
+      const u='nmap://route/car?slat='+sl+'&slng='+sg+'&sname='+encodeURIComponent('현재위치')+'&dlat='+dlat+'&dlng='+dlng+'&dname='+encodeURIComponent(dn)+'&appname=jarirealtor-pixel.github.io';
+      location.href=u;
       setTimeout(function(){window.open('https://map.naver.com/p/directions/'+sg+','+sl+','+encodeURIComponent('현재위치')+'/'+dlng+','+dlat+','+encodeURIComponent(dn)+'/-/car')},2000);
     }else if(type==='kakao'){
       location.href='kakaomap://route?sp='+sl+','+sg+'&ep='+dlat+','+dlng+'&by=CAR';
@@ -106,8 +108,11 @@ function navi(type,dlat,dlng,dn){
       window.open('https://www.google.com/maps/dir/'+sl+','+sg+'/'+dlat+','+dlng);
     }
   },function(){
-    if(type==='naver')window.open('https://map.naver.com/p/directions/-/'+dlng+','+dlat+','+encodeURIComponent(dn)+'/-/car');
-    else if(type==='kakao')window.open('https://map.kakao.com/link/to/'+encodeURIComponent(dn)+','+dlat+','+dlng);
+    // GPS 실패 시: 출발지 없이 도착지만
+    if(type==='naver'){
+      location.href='nmap://route/car?dlat='+dlat+'&dlng='+dlng+'&dname='+encodeURIComponent(dn)+'&appname=jarirealtor-pixel.github.io';
+      setTimeout(function(){window.open('https://map.naver.com/p/directions/-/'+dlng+','+dlat+','+encodeURIComponent(dn)+'/-/car')},2000);
+    }else if(type==='kakao')window.open('https://map.kakao.com/link/to/'+encodeURIComponent(dn)+','+dlat+','+dlng);
     else window.open('https://www.google.com/maps/dir/?api=1&destination='+dlat+','+dlng);
   },{enableHighAccuracy:true,timeout:5000});
 }
