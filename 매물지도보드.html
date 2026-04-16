@@ -43,7 +43,9 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
 </style></head><body>
 <div class="hdr"><h1>🗺️ 매물 <span>지도보드</span></h1>
-<div style="display:flex;align-items:center;gap:12px;">
+<div style="display:flex;align-items:center;gap:8px;">
+<button onclick="exportWish()" style="background:#eab308;color:#000;padding:6px 12px;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer" title="관심매물.json 다운로드 (노션 동기화용)">⭐ <span id="wishCount">0</span> 내보내기</button>
+<button onclick="clearWish()" style="background:#374151;color:#fff;padding:6px 10px;border:none;border-radius:6px;font-size:12px;cursor:pointer" title="관심매물 초기화">🗑</button>
 <a href="분석리포트.html" style="background:var(--ac);color:#fff;padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:700;">📊 분석리포트</a>
 <span class="m" id="meta" style="font-size:12px;color:var(--tx2)"></span></div></div>
 <div class="sb" id="sb"></div>
@@ -54,6 +56,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);
 <select id="fTr"><option value="">거래 전체</option><option value="A1">매매</option><option value="B1">전세</option><option value="B2">월세</option></select>
 <select id="fS"><option value="">상태 전체</option><option value="new">🆕 신규</option><option value="changed">💰 가격변동</option><option value="existing">기존</option><option value="removed">❌ 삭제</option></select>
 <select id="fConf"><option value="">확인 전체</option><option value="unconf">⏳ 미확인</option><option value="conf">✅ 확인완료</option></select>
+<select id="fWish"><option value="">관심 전체</option><option value="wish">⭐ 관심만</option></select>
 <select id="fO"><option value="newest">최신순</option><option value="pL">낮은가격순</option><option value="pH">높은가격순</option><option value="aL">낮은면적순</option><option value="aH">높은면적순</option><option value="lpL">평당가↓</option><option value="lpH">평당가↑</option></select>
 <div class="fc" id="fc"></div></div>
 <div class="al" id="al"></div></div>
@@ -91,6 +94,28 @@ function getConf(){try{return JSON.parse(localStorage.getItem('confirmed')||'[]'
 function setConf(a){try{localStorage.setItem('confirmed',JSON.stringify(a))}catch(e){}}
 function isConf(no){return getConf().includes(String(no))}
 function togConf(no){const c=getConf(),s=String(no),i=c.indexOf(s);if(i>=0)c.splice(i,1);else c.push(s);setConf(c);render()}
+
+// 관심매물 (⭐) — 노션 동기화용
+function getWish(){try{return JSON.parse(localStorage.getItem('wishlist')||'[]')}catch(e){return[]}}
+function setWish(a){try{localStorage.setItem('wishlist',JSON.stringify(a))}catch(e){}}
+function isWish(no){return getWish().includes(String(no))}
+function togWish(no){const w=getWish(),s=String(no),i=w.indexOf(s);if(i>=0)w.splice(i,1);else w.push(s);setWish(w);render();updWishCount()}
+function updWishCount(){const el=document.getElementById('wishCount');if(el)el.textContent=getWish().length}
+function exportWish(){
+  const w=getWish();
+  if(!w.length){alert('관심매물이 없습니다. 매물 팝업에서 ⭐ 버튼으로 등록하세요.');return}
+  const blob=new Blob([JSON.stringify(w,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='관심매물.json';a.click();
+  URL.revokeObjectURL(url);
+  alert('관심매물.json 다운로드됨.\n박가님 PC 의 네이버부동산크롤링 폴더에 넣고\n노션동기화.bat 를 실행하세요.');
+}
+function clearWish(){
+  if(confirm('모든 관심매물 표시를 지우시겠습니까?\n(노션 DB 는 영향 없음)')){
+    setWish([]);render();updWishCount();
+  }
+}
 
 // GPS 길찾기
 function navi(type,dlat,dlng,dn){
@@ -133,7 +158,11 @@ function pp(a){
   let li='';if(a.land)li+=`📐 대지 ${a.land}㎡(${a.landP}평)`;if(a.lppT!=='-')li+=` · ${a.lppT}`;
   let fi='';if(a.floor)fi+=`🏗 연면적 ${a.floor}㎡(${a.floorP}평)`;if(a.fppT!=='-')fi+=` · ${a.fppT}`;
   const cf=isConf(a.no);
+  const wf=isWish(a.no);
   const dn=a.short.replace(/'/g,"\\'");
+  const wb=wf
+    ?`<button onclick="togWish('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#eab308;color:#000;font-weight:700;cursor:pointer;margin-bottom:6px">⭐ 관심 해제</button>`
+    :`<button onclick="togWish('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#475569;color:#fff;font-weight:700;cursor:pointer;margin-bottom:6px">☆ 관심매물로 등록 (노션용)</button>`;
   const cb=cf
     ?`<button onclick="togConf('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#f59e0b;color:#fff;font-weight:700;cursor:pointer;margin-bottom:6px">⏪ 재확인</button>`
     :`<button onclick="togConf('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#16a34a;color:#fff;font-weight:700;cursor:pointer;margin-bottom:6px">✅ 확인완료</button>`;
@@ -147,6 +176,7 @@ ${a.feat!=='-'?`<div class="pf">"${a.feat}"</div>`:''}
 <div class="pr">🏢 ${a.broker}</div>
 <div class="pr" style="font-size:11px;color:#888">📅 노출: ${a.expose} · 확인: ${a.confirm}</div>
 ${a.url?`<div style="margin:6px 0"><a href="${a.url}" target="_blank" style="color:#1a73e8;font-size:13px;font-weight:700;text-decoration:underline">🔗 네이버 매물 상세보기</a></div>`:''}
+${wb}
 ${cb}
 <div class="nb">
 <a class="nv" href="#" onclick="navi('naver',${a.lat},${a.lon},'${dn}');return false">네이버<br>길찾기</a>
@@ -174,9 +204,10 @@ b.innerHTML=`<div class="sc"><div class="n">${ac}</div><div class="l">활성</di
 rs();document.getElementById('meta').textContent=`${new Date().toLocaleString('ko-KR')} · ${D.length}건`;
 
 // 필터 로직
-function gf(){let d=[...D];const r=fR.value,t=fT.value,tr=document.getElementById('fTr').value,s=document.getElementById('fS').value,cf=document.getElementById('fConf').value;
+function gf(){let d=[...D];const r=fR.value,t=fT.value,tr=document.getElementById('fTr').value,s=document.getElementById('fS').value,cf=document.getElementById('fConf').value,wf=document.getElementById('fWish').value;
 if(r)d=d.filter(a=>a.region===r);if(t)d=d.filter(a=>a.type===t);if(tr)d=d.filter(a=>a.trade===tr);if(s)d=d.filter(a=>a.status===s);
 if(cf==='conf')d=d.filter(a=>isConf(a.no));if(cf==='unconf')d=d.filter(a=>!isConf(a.no));
+if(wf==='wish')d=d.filter(a=>isWish(a.no));
 const o=document.getElementById('fO').value;
 switch(o){case'newest':d.sort((a,b)=>(b.firstSeen||'').localeCompare(a.firstSeen||''));break;
 case'pH':d.sort((a,b)=>b.deal-a.deal);break;case'pL':d.sort((a,b)=>(a.deal||9e15)-(b.deal||9e15));break;
@@ -197,8 +228,9 @@ function togGrp(id){const e=document.getElementById('g-'+id);if(e)e.style.displa
 // 리스트 아이템 렌더
 function ri(a){
   let li='';if(a.land)li=`대지 ${a.landP}평`;if(a.lppT!=='-')li+=` · ${a.lppT}`;if(a.floor)li+=` / 연${a.floorP}평`;
+  const ws=isWish(a.no)?'<span style="color:#eab308;margin-right:4px">⭐</span>':'';
   return `<div class="ai ${a.status} ${isConf(a.no)?'confirmed':''}" id="item-${a.no}" onclick="fo('${a.no}')" style="border-left-color:${TC[a.type]||'#6b7280'}">
-<div class="tr"><div class="pr">${isConf(a.no)?'<span style="color:#16a34a;margin-right:4px">✓</span>':''}<span class="sd2 ${a.status}"></span>${a.dealText}</div><span class="tb" style="background:${TC[a.type]||'#6b7280'}">${a.type}</span></div>
+<div class="tr"><div class="pr">${ws}${isConf(a.no)?'<span style="color:#16a34a;margin-right:4px">✓</span>':''}<span class="sd2 ${a.status}"></span>${a.dealText}</div><span class="tb" style="background:${TC[a.type]||'#6b7280'}">${a.type}</span></div>
 <div class="dt">${li?`📐 ${li}<br>`:''}${a.age!=='-'?`🏗 ${a.age} · `:''}${a.short} · 노출:${a.expose}</div>
 ${a.feat!=='-'?`<div class="fe">"${a.feat}"</div>`:''}
 <div style="font-size:11px;color:var(--tx2);margin-top:2px">${a.broker} · <a href="${a.url}" target="_blank" style="color:#4f8cff" onclick="event.stopPropagation()">상세↗</a></div></div>`}
@@ -223,6 +255,7 @@ ls.innerHTML=h}
 function fo(no){const m=mk[no];if(m){map.setView(m.getLatLng(),16);m.openPopup();scrollTo2(no)}}
 function scrollTo2(no){document.querySelectorAll('.ai.active').forEach(e=>e.classList.remove('active'));
 const el=document.getElementById('item-'+no);if(el){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'})}}
-['fR','fT','fTr','fS','fConf','fO'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+['fR','fT','fTr','fS','fConf','fWish','fO'].forEach(id=>document.getElementById(id).addEventListener('change',render));
+updWishCount();
 render();
 </script></body></html>
