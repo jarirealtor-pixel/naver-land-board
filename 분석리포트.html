@@ -31,17 +31,17 @@ tr:hover{background:var(--sf2)}
 <h1>📊 매물 <span>분석리포트</span></h1>
 <div style="display:flex;align-items:center;gap:12px;">
 <a href="매물지도보드.html">🗺️ 지도보드</a>
-<span style="font-size:12px;color:var(--tx2)">2026-04-16 13:58</span>
+<span style="font-size:12px;color:var(--tx2)">2026-04-16 15:41</span>
 </div></div>
 
 <div class="wrap">
 
 <div class="cards">
-<div class="card"><div class="n">601</div><div class="l">활성 매물</div></div>
-<div class="card nw"><div class="n">100</div><div class="l">🆕 오늘 신규</div></div>
+<div class="card"><div class="n">710</div><div class="l">활성 매물</div></div>
+<div class="card nw"><div class="n">209</div><div class="l">🆕 오늘 신규</div></div>
 <div class="card ch"><div class="n">0</div><div class="l">💰 가격변동</div></div>
 <div class="card rm"><div class="n">0</div><div class="l">❌ 삭제</div></div>
-<div class="card"><div class="n">38억 6,923만</div><div class="l">평균 매매가</div></div>
+<div class="card"><div class="n">41억 2,812만</div><div class="l">평균 매매가</div></div>
 <div class="card"><div class="n">6</div><div class="l">수집 지역</div></div>
 </div>
 
@@ -69,7 +69,7 @@ tr:hover{background:var(--sf2)}
 </div>
 
 <div class="panel" style="margin-bottom:24px"><h2>🕐 최근 수집 이력</h2>
-<table><tr><th>시각</th><th>지역</th><th>수집</th><th>신규</th><th>변동</th><th>삭제</th></tr><tr><td>2026-04-16 10:59</td><td>기흥</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 18:28</td><td>이동읍</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 18:09</td><td>남사읍</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 17:37</td><td>수지</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 15:05</td><td>남사읍</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 14:01</td><td>처인</td><td>26</td><td>26</td><td>0</td><td>0</td></tr><tr><td>2026-04-13 12:13</td><td>포곡읍</td><td>75</td><td>0</td><td>0</td><td>0</td></tr><tr><td>2026-04-13 12:08</td><td>포곡읍</td><td>75</td><td>75</td><td>0</td><td>0</td></tr></table>
+<table><tr><th>시각</th><th>지역</th><th>수집</th><th>신규</th><th>변동</th><th>삭제</th></tr><tr><td>2026-04-16 14:56</td><td>수지</td><td>100</td><td>9</td><td>0</td><td>0</td></tr><tr><td>2026-04-16 14:49</td><td>수지</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-16 10:59</td><td>기흥</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 18:28</td><td>이동읍</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 18:09</td><td>남사읍</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 17:37</td><td>수지</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 15:05</td><td>남사읍</td><td>100</td><td>100</td><td>0</td><td>0</td></tr><tr><td>2026-04-15 14:01</td><td>처인</td><td>26</td><td>26</td><td>0</td><td>0</td></tr><tr><td>2026-04-13 12:13</td><td>포곡읍</td><td>75</td><td>0</td><td>0</td><td>0</td></tr><tr><td>2026-04-13 12:08</td><td>포곡읍</td><td>75</td><td>75</td><td>0</td><td>0</td></tr></table>
 </div>
 
 <div class="meta">매물DB.sqlite 기준 · 크롤링 후 이 리포트를 재생성하면 최신 데이터로 갱신됩니다</div>
@@ -79,13 +79,13 @@ tr:hover{background:var(--sf2)}
 const CO={responsive:true,plugins:{legend:{display:false}}};
 const CC=['#4f8cff','#22c55e','#f59e0b','#ef4444','#a78bfa','#ec4899','#06b6d4','#84cc16','#f97316','#6366f1'];
 
-new Chart(document.getElementById('c1'),{type:'bar',data:{labels:["남사읍", "이동읍", "수지", "기흥", "포곡읍", "처인"],datasets:[{data:[200, 100, 100, 100, 75, 26],backgroundColor:CC}]},options:{...CO,indexAxis:'y'}});
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:["수지", "남사읍", "이동읍", "기흥", "포곡읍", "처인"],datasets:[{data:[209, 200, 100, 100, 75, 26],backgroundColor:CC}]},options:{...CO,indexAxis:'y'}});
 
-new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:["E03", "공장/창고", "지식산업센터", "토지", "Z00", "건물", "아파트"],datasets:[{data:[400, 173, 14, 5, 4, 3, 2],backgroundColor:CC}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{color:'#e8eaed',font:{size:12}}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:["E03", "공장/창고", "지식산업센터", "건물", "토지", "Z00", "아파트"],datasets:[{data:[409, 173, 75, 37, 8, 6, 2],backgroundColor:CC}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{color:'#e8eaed',font:{size:12}}}}}});
 
-new Chart(document.getElementById('c3'),{type:'bar',data:{labels:["5억 미만", "5~10억", "10~20억", "20~50억", "50~100억", "100억 이상"],datasets:[{data:[53, 96, 135, 158, 113, 46],backgroundColor:'#4f8cff'}]},options:CO});
+new Chart(document.getElementById('c3'),{type:'bar',data:{labels:["5억 미만", "5~10억", "10~20억", "20~50억", "50~100억", "100억 이상"],datasets:[{data:[54, 103, 147, 208, 141, 57],backgroundColor:'#4f8cff'}]},options:CO});
 
-new Chart(document.getElementById('c4'),{type:'bar',data:{labels:["100평 미만", "100~300평", "300~500평", "500~1000평", "1000~3000평", "3000평 이상"],datasets:[{data:[43, 156, 97, 142, 125, 34],backgroundColor:'#22c55e'}]},options:CO});
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:["100평 미만", "100~300평", "300~500평", "500~1000평", "1000~3000평", "3000평 이상"],datasets:[{data:[71, 219, 109, 145, 128, 34],backgroundColor:'#22c55e'}]},options:CO});
 
-new Chart(document.getElementById('c5'),{type:'bar',data:{labels:["남사읍", "이동읍", "수지", "기흥", "포곡읍", "처인"],datasets:[{data:[3611929, 3385456, 9915496, 9519856, 5210886, 7584446].map(v=>Math.round(v/10000)),backgroundColor:'#f59e0b'}]},options:{...CO,scales:{y:{title:{display:true,text:'만원/평',color:'#9aa0b0'}}}}});
+new Chart(document.getElementById('c5'),{type:'bar',data:{labels:["수지", "남사읍", "이동읍", "기흥", "포곡읍", "처인"],datasets:[{data:[21122797, 3611929, 3385456, 9519856, 5210886, 7584446].map(v=>Math.round(v/10000)),backgroundColor:'#f59e0b'}]},options:{...CO,scales:{y:{title:{display:true,text:'만원/평',color:'#9aa0b0'}}}}});
 </script></body></html>
