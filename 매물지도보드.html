@@ -95,25 +95,37 @@ function setConf(a){try{localStorage.setItem('confirmed',JSON.stringify(a))}catc
 function isConf(no){return getConf().includes(String(no))}
 function togConf(no){const c=getConf(),s=String(no),i=c.indexOf(s);if(i>=0)c.splice(i,1);else c.push(s);setConf(c);render()}
 
-// 관심매물 (⭐) — 노션 동기화용
-function getWish(){try{return JSON.parse(localStorage.getItem('wishlist')||'[]')}catch(e){return[]}}
-function setWish(a){try{localStorage.setItem('wishlist',JSON.stringify(a))}catch(e){}}
-function isWish(no){return getWish().includes(String(no))}
-function togWish(no){const w=getWish(),s=String(no),i=w.indexOf(s);if(i>=0)w.splice(i,1);else w.push(s);setWish(w);render();updWishCount()}
-function updWishCount(){const el=document.getElementById('wishCount');if(el)el.textContent=getWish().length}
+// 관심매물 (⭐) — 노션 동기화용 (전화번호+메모 포함)
+function getWish(){try{return JSON.parse(localStorage.getItem('wishlist2')||'{}')}catch(e){return{}}}
+function setWish(o){try{localStorage.setItem('wishlist2',JSON.stringify(o))}catch(e){}}
+function isWish(no){return String(no) in getWish()}
+function saveWish(no){
+  const w=getWish(),s=String(no);
+  const ph=document.getElementById('inp-phone-'+s);
+  const mm=document.getElementById('inp-memo-'+s);
+  w[s]={phone:ph?ph.value:'',memo:mm?mm.value:'',savedAt:new Date().toISOString()};
+  setWish(w);render();updWishCount();
+  alert('⭐ 관심매물 등록 완료!');
+}
+function removeWish(no){
+  const w=getWish(),s=String(no);
+  if(confirm('관심 해제하시겠습니까?')){delete w[s];setWish(w);render();updWishCount();}
+}
+function getWishData(no){return getWish()[String(no)]||{}}
+function updWishCount(){const el=document.getElementById('wishCount');if(el)el.textContent=Object.keys(getWish()).length}
 function exportWish(){
-  const w=getWish();
-  if(!w.length){alert('관심매물이 없습니다. 매물 팝업에서 ⭐ 버튼으로 등록하세요.');return}
+  const w=getWish();const keys=Object.keys(w);
+  if(!keys.length){alert('관심매물이 없습니다.');return}
   const blob=new Blob([JSON.stringify(w,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;a.download='관심매물.json';a.click();
   URL.revokeObjectURL(url);
-  alert('관심매물.json 다운로드됨.\n박가님 PC 의 네이버부동산크롤링 폴더에 넣고\n노션동기화.bat 를 실행하세요.');
+  alert('관심매물.json 다운로드됨 ('+keys.length+'건)\\n전화번호·메모 포함.\\n노션동기화.bat 실행하세요.');
 }
 function clearWish(){
-  if(confirm('모든 관심매물 표시를 지우시겠습니까?\n(노션 DB 는 영향 없음)')){
-    setWish([]);render();updWishCount();
+  if(confirm('모든 관심매물 표시를 지우시겠습니까?\\n(노션 DB 는 영향 없음)')){
+    setWish({});render();updWishCount();
   }
 }
 
@@ -159,10 +171,19 @@ function pp(a){
   let fi='';if(a.floor)fi+=`🏗 연면적 ${a.floor}㎡(${a.floorP}평)`;if(a.fppT!=='-')fi+=` · ${a.fppT}`;
   const cf=isConf(a.no);
   const wf=isWish(a.no);
+  const wd=getWishData(a.no);
   const dn=a.short.replace(/'/g,"\\'");
-  const wb=wf
-    ?`<button onclick="togWish('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#eab308;color:#000;font-weight:700;cursor:pointer;margin-bottom:6px">⭐ 관심 해제</button>`
-    :`<button onclick="togWish('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#475569;color:#fff;font-weight:700;cursor:pointer;margin-bottom:6px">☆ 관심매물로 등록 (노션용)</button>`;
+  const wishSection=wf
+    ?`<div style="background:#1e293b;border:2px solid #eab308;border-radius:8px;padding:10px;margin-bottom:6px">
+<div style="color:#eab308;font-weight:700;margin-bottom:6px">⭐ 관심매물 등록됨</div>
+<div style="font-size:12px;color:#888;margin-bottom:4px">📞 ${wd.phone||'미입력'}</div>
+<div style="font-size:12px;color:#888;margin-bottom:6px">📝 ${wd.memo||'미입력'}</div>
+<button onclick="removeWish('${a.no}')" style="width:100%;padding:6px;border:none;border-radius:6px;background:#475569;color:#fff;font-size:12px;cursor:pointer">관심 해제</button></div>`
+    :`<div style="background:#1e293b;border:1px solid #475569;border-radius:8px;padding:10px;margin-bottom:6px">
+<div style="font-size:13px;color:#e8eaed;font-weight:700;margin-bottom:8px">📋 관심매물 등록 (노션용)</div>
+<div style="margin-bottom:6px"><input id="inp-phone-${a.no}" type="tel" placeholder="📞 소유자 전화번호" style="width:100%;padding:8px;border:1px solid #475569;border-radius:6px;background:#0f1117;color:#e8eaed;font-size:13px;font-family:inherit" onclick="event.stopPropagation()"></div>
+<div style="margin-bottom:8px"><textarea id="inp-memo-${a.no}" placeholder="📝 상담내용 메모 (방문 소감, 협상 내용 등)" rows="3" style="width:100%;padding:8px;border:1px solid #475569;border-radius:6px;background:#0f1117;color:#e8eaed;font-size:13px;font-family:inherit;resize:vertical" onclick="event.stopPropagation()"></textarea></div>
+<button onclick="saveWish('${a.no}')" style="width:100%;padding:10px;border:none;border-radius:6px;background:#eab308;color:#000;font-weight:700;font-size:14px;cursor:pointer">⭐ 관심매물로 등록</button></div>`;
   const cb=cf
     ?`<button onclick="togConf('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#f59e0b;color:#fff;font-weight:700;cursor:pointer;margin-bottom:6px">⏪ 재확인</button>`
     :`<button onclick="togConf('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#16a34a;color:#fff;font-weight:700;cursor:pointer;margin-bottom:6px">✅ 확인완료</button>`;
@@ -176,7 +197,7 @@ ${a.feat!=='-'?`<div class="pf">"${a.feat}"</div>`:''}
 <div class="pr">🏢 ${a.broker}</div>
 <div class="pr" style="font-size:11px;color:#888">📅 노출: ${a.expose} · 확인: ${a.confirm}</div>
 ${a.url?`<div style="margin:6px 0"><a href="${a.url}" target="_blank" style="color:#1a73e8;font-size:13px;font-weight:700;text-decoration:underline">🔗 네이버 매물 상세보기</a></div>`:''}
-${wb}
+${wishSection}
 ${cb}
 <div class="nb">
 <a class="nv" href="#" onclick="navi('naver',${a.lat},${a.lon},'${dn}');return false">네이버<br>길찾기</a>
