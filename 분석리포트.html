@@ -31,17 +31,17 @@ tr:hover{background:var(--sf2)}
 <h1>📊 매물 <span>분석리포트</span></h1>
 <div style="display:flex;align-items:center;gap:12px;">
 <a href="매물지도보드.html">🗺️ 지도보드</a>
-<span style="font-size:12px;color:var(--tx2)">2026-04-20 14:53</span>
+<span style="font-size:12px;color:var(--tx2)">2026-04-20 15:10</span>
 </div></div>
 
 <div class="wrap">
 
 <div class="cards">
-<div class="card"><div class="n">782</div><div class="l">활성 매물</div></div>
-<div class="card nw"><div class="n">782</div><div class="l">🆕 오늘 신규</div></div>
+<div class="card"><div class="n">931</div><div class="l">활성 매물</div></div>
+<div class="card nw"><div class="n">931</div><div class="l">🆕 오늘 신규</div></div>
 <div class="card ch"><div class="n">0</div><div class="l">💰 가격변동</div></div>
 <div class="card rm"><div class="n">0</div><div class="l">❌ 삭제</div></div>
-<div class="card"><div class="n">36억 7,518만</div><div class="l">평균 매매가</div></div>
+<div class="card"><div class="n">40억 6,544만</div><div class="l">평균 매매가</div></div>
 <div class="card"><div class="n">2</div><div class="l">수집 지역</div></div>
 </div>
 
@@ -69,7 +69,7 @@ tr:hover{background:var(--sf2)}
 </div>
 
 <div class="panel" style="margin-bottom:24px"><h2>🕐 최근 수집 이력</h2>
-<div style="color:var(--tx2);padding:20px;text-align:center">수집 이력 없음</div>
+<table><tr><th>시각</th><th>지역</th><th>수집</th><th>신규</th><th>변동</th><th>삭제</th></tr><tr><td>2026-04-20 15:02</td><td>수지</td><td>149</td><td>149</td><td>0</td><td>0</td></tr></table>
 </div>
 
 <div class="meta">매물DB.sqlite 기준 · 크롤링 후 이 리포트를 재생성하면 최신 데이터로 갱신됩니다</div>
@@ -79,13 +79,13 @@ tr:hover{background:var(--sf2)}
 const CO={responsive:true,plugins:{legend:{display:false}}};
 const CC=['#4f8cff','#22c55e','#f59e0b','#ef4444','#a78bfa','#ec4899','#06b6d4','#84cc16','#f97316','#6366f1'];
 
-new Chart(document.getElementById('c1'),{type:'bar',data:{labels:["포곡읍", "수지"],datasets:[{data:[427, 355],backgroundColor:CC}]},options:{...CO,indexAxis:'y'}});
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:["수지", "포곡읍"],datasets:[{data:[504, 427],backgroundColor:CC}]},options:{...CO,indexAxis:'y'}});
 
-new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:["E03", "공장/창고"],datasets:[{data:[706, 76],backgroundColor:CC}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{color:'#e8eaed',font:{size:12}}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:["E03", "지식산업센터", "공장/창고", "건물", "토지", "Z00"],datasets:[{data:[706, 86, 76, 56, 4, 3],backgroundColor:CC}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{color:'#e8eaed',font:{size:12}}}}}});
 
-new Chart(document.getElementById('c3'),{type:'bar',data:{labels:["5억 미만", "5~10억", "10~20억", "20~50억", "50~100억", "100억 이상"],datasets:[{data:[74, 154, 229, 186, 92, 47],backgroundColor:'#4f8cff'}]},options:CO});
+new Chart(document.getElementById('c3'),{type:'bar',data:{labels:["5억 미만", "5~10억", "10~20억", "20~50억", "50~100억", "100억 이상"],datasets:[{data:[76, 162, 242, 251, 132, 68],backgroundColor:'#4f8cff'}]},options:CO});
 
-new Chart(document.getElementById('c4'),{type:'bar',data:{labels:[],datasets:[{data:[],backgroundColor:'#22c55e'}]},options:CO});
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:["100평 미만", "100~300평", "300~500평", "500~1000평", "1000~3000평"],datasets:[{data:[36, 82, 23, 3, 5],backgroundColor:'#22c55e'}]},options:CO});
 
-new Chart(document.getElementById('c5'),{type:'bar',data:{labels:["포곡읍", "수지"],datasets:[{data:[0, 0].map(v=>Math.round(v/10000)),backgroundColor:'#f59e0b'}]},options:{...CO,scales:{y:{title:{display:true,text:'만원/평',color:'#9aa0b0'}}}}});
+new Chart(document.getElementById('c5'),{type:'bar',data:{labels:["수지", "포곡읍"],datasets:[{data:[31472324, 0].map(v=>Math.round(v/10000)),backgroundColor:'#f59e0b'}]},options:{...CO,scales:{y:{title:{display:true,text:'만원/평',color:'#9aa0b0'}}}}});
 </script></body></html>
