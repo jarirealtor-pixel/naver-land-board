@@ -96,6 +96,47 @@ function isConf(no){return getConf().includes(String(no))}
 function togConf(no){const c=getConf(),s=String(no),i=c.indexOf(s);if(i>=0)c.splice(i,1);else c.push(s);setConf(c);render()}
 
 // 관심매물 (⭐) — 노션 동기화용 (전화번호+메모 포함)
+
+// 전체화면 입력 오버레이 (아이패드 펜슬용)
+function openBigInput(targetId, btnId, label, isMultiline){
+  let existing=document.getElementById('big-input-overlay');
+  if(existing)existing.remove();
+  const target=document.getElementById(targetId);
+  const currentVal=target?target.value:'';
+  const overlay=document.createElement('div');
+  overlay.id='big-input-overlay';
+  overlay.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);z-index:99999;display:flex;flex-direction:column;padding:20px;';
+  overlay.innerHTML=`
+    <div style="color:#e8eaed;font-size:20px;font-weight:700;margin-bottom:12px;text-align:center">${label}</div>
+    ${isMultiline
+      ?`<textarea id="big-input-field" style="flex:1;width:100%;padding:24px;border:2px solid #4f8cff;border-radius:14px;background:#1a1d27;color:#e8eaed;font-size:24px;font-family:inherit;line-height:1.8;resize:none" placeholder="여기에 자유롭게 메모하세요...\n\n펜슬로 큰 글씨 가능!">${currentVal}</textarea>`
+      :`<div style="flex:1;display:flex;align-items:center;justify-content:center"><input id="big-input-field" type="tel" value="${currentVal}" style="width:100%;max-width:500px;padding:24px;border:2px solid #4f8cff;border-radius:14px;background:#1a1d27;color:#e8eaed;font-size:36px;font-family:inherit;text-align:center;letter-spacing:3px" placeholder="010-0000-0000"></div>`
+    }
+    <div style="display:flex;gap:12px;margin-top:14px">
+      <button onclick="closeBigInput(false)" style="flex:1;padding:16px;border:1px solid #475569;border-radius:12px;background:#374151;color:#e8eaed;font-size:18px;font-weight:700;cursor:pointer">취소</button>
+      <button onclick="closeBigInput(true,'${targetId}','${btnId}')" style="flex:1;padding:16px;border:none;border-radius:12px;background:#4f8cff;color:#fff;font-size:18px;font-weight:700;cursor:pointer">✓ 입력 완료</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(()=>{const f=document.getElementById('big-input-field');if(f)f.focus()},200);
+}
+function closeBigInput(save,targetId,btnId){
+  const overlay=document.getElementById('big-input-overlay');
+  if(save&&targetId){
+    const val=document.getElementById('big-input-field').value;
+    const target=document.getElementById(targetId);
+    const btn=document.getElementById(btnId);
+    if(target)target.value=val;
+    if(btn&&val){
+      btn.style.color='#e8eaed';
+      btn.style.borderStyle='solid';
+      btn.style.borderColor='#4f8cff';
+      btn.style.textAlign='left';
+      btn.textContent=val.length>60?val.substring(0,60)+'...':val;
+    }
+  }
+  if(overlay)overlay.remove();
+}
+
 function getWish(){try{return JSON.parse(localStorage.getItem('wishlist2')||'{}')}catch(e){return{}}}
 function setWish(o){try{localStorage.setItem('wishlist2',JSON.stringify(o))}catch(e){}}
 function isWish(no){return String(no) in getWish()}
@@ -181,8 +222,10 @@ function pp(a){
 <button onclick="removeWish('${a.no}')" style="width:100%;padding:6px;border:none;border-radius:6px;background:#475569;color:#fff;font-size:12px;cursor:pointer">관심 해제</button></div>`
     :`<div style="background:#1e293b;border:1px solid #475569;border-radius:8px;padding:10px;margin-bottom:6px">
 <div style="font-size:13px;color:#e8eaed;font-weight:700;margin-bottom:8px">📋 관심매물 등록 (노션용)</div>
-<div style="margin-bottom:6px"><input id="inp-phone-${a.no}" type="tel" placeholder="📞 소유자 전화번호" style="width:100%;padding:8px;border:1px solid #475569;border-radius:6px;background:#0f1117;color:#e8eaed;font-size:13px;font-family:inherit" onclick="event.stopPropagation()"></div>
-<div style="margin-bottom:8px"><textarea id="inp-memo-${a.no}" placeholder="📝 상담내용 메모 (방문 소감, 협상 내용 등)" rows="3" style="width:100%;padding:8px;border:1px solid #475569;border-radius:6px;background:#0f1117;color:#e8eaed;font-size:13px;font-family:inherit;resize:vertical" onclick="event.stopPropagation()"></textarea></div>
+<input id="inp-phone-${a.no}" type="hidden">
+<div id="btn-phone-${a.no}" onclick="openBigInput('inp-phone-${a.no}','btn-phone-${a.no}','📞 소유자 전화번호',false);event.stopPropagation()" style="width:100%;padding:12px;border:1px dashed #475569;border-radius:8px;background:#0f1117;color:#9aa0b0;font-size:14px;margin-bottom:6px;cursor:pointer;text-align:center">📞 전화번호 입력 (탭하면 크게 열림)</div>
+<input id="inp-memo-${a.no}" type="hidden">
+<div id="btn-memo-${a.no}" onclick="openBigInput('inp-memo-${a.no}','btn-memo-${a.no}','📝 상담내용 메모',true);event.stopPropagation()" style="width:100%;padding:12px;border:1px dashed #475569;border-radius:8px;background:#0f1117;color:#9aa0b0;font-size:14px;margin-bottom:8px;cursor:pointer;text-align:center;min-height:50px">📝 상담메모 입력 (탭하면 크게 열림)</div>
 <button onclick="saveWish('${a.no}')" style="width:100%;padding:10px;border:none;border-radius:6px;background:#eab308;color:#000;font-weight:700;font-size:14px;cursor:pointer">⭐ 관심매물로 등록</button></div>`;
   const cb=cf
     ?`<button onclick="togConf('${a.no}')" style="width:100%;padding:8px;border:none;border-radius:6px;background:#f59e0b;color:#fff;font-weight:700;cursor:pointer;margin-bottom:6px">⏪ 재확인</button>`
