@@ -107,7 +107,7 @@ function openBigInput(targetId, btnId, label, isMultiline){
   overlay.id='big-input-overlay';
   overlay.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.6);z-index:99999;display:flex;align-items:center;justify-content:center;';
   overlay.onclick=function(){closeBigInput(false)};
-  const boxH=isMultiline?'35vh':'25vh';
+  const boxH=isMultiline?'85vh':'25vh';
   overlay.innerHTML=`
     <div style="width:85vw;max-width:500px;height:${boxH};background:#1a1d27;border:2px solid #4f8cff;border-radius:16px;padding:16px;display:flex;flex-direction:column" onclick="event.stopPropagation()">
     <div style="color:#e8eaed;font-size:16px;font-weight:700;margin-bottom:10px;text-align:center">${label}</div>
