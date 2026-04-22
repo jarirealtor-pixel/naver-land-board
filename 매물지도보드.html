@@ -44,7 +44,9 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);
 </style></head><body>
 <div class="hdr"><h1>🗺️ 매물 <span>지도보드</span></h1>
 <div style="display:flex;align-items:center;gap:8px;">
-<button onclick="exportWish()" style="background:#eab308;color:#000;padding:6px 12px;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer" title="관심매물.json 다운로드 (노션 동기화용)">⭐ <span id="wishCount">0</span> 내보내기</button>
+<button onclick="openWishList()" style="background:#eab308;color:#000;padding:6px 12px;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer" title="관심매물 목록 보기/수정">⭐ <span id="wishCount">0</span> 리스트</button>
+<button onclick="exportWish()" style="background:#374151;color:#eab308;padding:6px 10px;border:1px solid #eab308;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer" title="관심매물.json 다운로드">📤</button>
+<button id="mapSyncBtn" onclick="toggleMapSync()" style="background:#22c55e;color:#fff;padding:6px 10px;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer" title="지도 이동 시 목록 자동 필터">🗺 지도연동 ON</button>
 <button onclick="clearWish()" style="background:#374151;color:#fff;padding:6px 10px;border:none;border-radius:6px;font-size:12px;cursor:pointer" title="관심매물 초기화">🗑</button>
 <a href="분석리포트.html" style="background:var(--ac);color:#fff;padding:6px 14px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:700;">📊 분석리포트</a>
 <span class="m" id="meta" style="font-size:12px;color:var(--tx2)"></span></div></div>
@@ -67,12 +69,20 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);
 <label style="display:block;margin:4px 0;cursor:pointer"><input type="checkbox" id="chkZ"> 용도지역</label>
 <label style="display:block;margin:4px 0;cursor:pointer"><input type="checkbox" id="chkS"> 위성사진</label>
 <div id="zL" style="display:none;margin-top:8px;font-size:11px;border-top:1px solid var(--bd);padding-top:6px;">
-<div style="font-weight:600;margin-bottom:4px">범례</div>
-<div><span style="display:inline-block;width:12px;height:12px;background:#ffff00;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>주거</div>
-<div><span style="display:inline-block;width:12px;height:12px;background:#ff6600;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>상업</div>
-<div><span style="display:inline-block;width:12px;height:12px;background:#cc99ff;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>공업</div>
-<div><span style="display:inline-block;width:12px;height:12px;background:#00cc66;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>녹지</div>
-<div><span style="display:inline-block;width:12px;height:12px;background:#ccc;border:1px solid #999;vertical-align:middle;margin-right:4px"></span>관리</div>
+<div style="font-weight:600;margin-bottom:4px">용도지역 범례</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#ffff00;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>제1종 주거</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#ffcc00;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>제2종 주거</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#ff9900;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>제3종 주거</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#ff3300;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>상업지역</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#cc99ff;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>공업지역</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#009933;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>자연녹지</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#66cc33;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>보전녹지</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#99ff66;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>생산녹지</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#cc9966;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>계획관리</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#cc6633;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>생산관리</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#999966;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>보전관리</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#66cccc;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>농림지역</div>
+<div><span style="display:inline-block;width:12px;height:12px;background:#33cc99;border:1px solid #ccc;vertical-align:middle;margin-right:4px"></span>자연환경보전</div>
 </div></div></div></div>
 
 <script>
@@ -260,26 +270,115 @@ tps.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent
 // 통계 바
 function rs(){const b=document.getElementById('sb');
 const ac=D.filter(a=>a.status!=='removed').length,nw=D.filter(a=>a.status==='new').length,
-ch=D.filter(a=>a.status==='changed').length,rm=D.filter(a=>a.status==='removed').length,
-av=ac>0?Math.round(D.filter(a=>a.deal>0&&a.status!=='removed').reduce((s,a)=>s+a.deal,0)/D.filter(a=>a.deal>0&&a.status!=='removed').length):0;
+ch=D.filter(a=>a.status==='changed').length,rm=D.filter(a=>a.status==='removed').length;
 b.innerHTML=`<div class="sc"><div class="n">${ac}</div><div class="l">활성</div></div>
 <div class="sc nw"><div class="n">${nw}</div><div class="l">🆕 신규</div></div>
 <div class="sc ch"><div class="n">${ch}</div><div class="l">💰 변동</div></div>
 <div class="sc rm"><div class="n">${rm}</div><div class="l">❌ 삭제</div></div>
-<div class="sc"><div class="n">${fmtp(av)}</div><div class="l">평균가</div></div>
 <div class="sc"><div class="n">${regs.length}</div><div class="l">지역</div></div>`}
 rs();document.getElementById('meta').textContent=`${new Date().toLocaleString('ko-KR')} · ${D.length}건`;
 
 // 필터 로직
+let mapSyncEnabled=true;
 function gf(){let d=[...D];const r=fR.value,t=fT.value,tr=document.getElementById('fTr').value,s=document.getElementById('fS').value,cf=document.getElementById('fConf').value,wf=document.getElementById('fWish').value;
 if(r)d=d.filter(a=>a.region===r);if(t)d=d.filter(a=>a.type===t);if(tr)d=d.filter(a=>a.trade===tr);if(s)d=d.filter(a=>a.status===s);
 if(cf==='conf')d=d.filter(a=>isConf(a.no));if(cf==='unconf')d=d.filter(a=>!isConf(a.no));
 if(wf==='wish')d=d.filter(a=>isWish(a.no));
+// 지도영역 필터
+if(mapSyncEnabled&&map.getZoom()>=12){
+  const b=map.getBounds();
+  d=d.filter(a=>a.lat&&a.lon&&b.contains([a.lat,a.lon]));
+}
 const o=document.getElementById('fO').value;
 switch(o){case'newest':d.sort((a,b)=>(b.firstSeen||'').localeCompare(a.firstSeen||''));break;
 case'pH':d.sort((a,b)=>b.deal-a.deal);break;case'pL':d.sort((a,b)=>(a.deal||9e15)-(b.deal||9e15));break;
 case'aL':d.sort((a,b)=>(a.land||9e15)-(b.land||9e15));break;case'aH':d.sort((a,b)=>(b.land||0)-(a.land||0));break;
 case'lpL':d.sort((a,b)=>(a.lpp||9e15)-(b.lpp||9e15));break;case'lpH':d.sort((a,b)=>(b.lpp||0)-(a.lpp||0));break}return d}
+
+// 지도 이동 시 목록 자동 갱신 (마커는 건드리지 않고 리스트만)
+function renderListOnly(){
+  const d=gf();
+  document.getElementById('fc').textContent=`${d.length}건 (전체 ${D.length})${mapSyncEnabled?' · 🗺지도연동':''}`;
+  const ls=document.getElementById('al');
+  if(!d.length){ls.innerHTML='<div style="padding:40px;text-align:center;color:var(--tx2)">이 영역에 매물 없음</div>';return}
+  const gs=grp(d);let h='';
+  gs.forEach((g,i)=>{
+    if(g.length===1){h+=ri(g[0])}
+    else{
+      h+=`<div class="grp-header" onclick="togGrp(${i})"><span>📦 동일매물 ${g.length}건 · ${g[0].dealText} · ${g[0].type} · ${g[0].short}</span><span style="color:var(--ac)">펼치기/접기 ▼</span></div>`;
+      h+=ri(g[0]);
+      h+=`<div id="g-${i}" class="grp-body" style="display:none">`;
+      for(let k=1;k<g.length;k++)h+=ri(g[k]);
+      h+='</div>'}});
+  ls.innerHTML=h;
+}
+map.on('moveend',function(){if(mapSyncEnabled)renderListOnly()});
+function toggleMapSync(){
+  mapSyncEnabled=!mapSyncEnabled;
+  const btn=document.getElementById('mapSyncBtn');
+  if(btn){btn.style.background=mapSyncEnabled?'#22c55e':'#475569';btn.textContent=mapSyncEnabled?'🗺 지도연동 ON':'🗺 지도연동 OFF'}
+  if(mapSyncEnabled)renderListOnly();else render();
+}
+
+// 관심매물 리스트 보기/수정 오버레이
+function openWishList(){
+  let existing=document.getElementById('wish-list-overlay');
+  if(existing)existing.remove();
+  const w=getWish();const keys=Object.keys(w);
+  if(!keys.length){alert('관심매물이 없습니다.');return}
+  const overlay=document.createElement('div');
+  overlay.id='wish-list-overlay';
+  overlay.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:99999;display:flex;align-items:center;justify-content:center';
+  overlay.onclick=function(e){if(e.target===overlay)overlay.remove()};
+  let rows='';
+  keys.forEach((no,i)=>{
+    const wd=w[no];
+    const art=D.find(a=>a.no===no);
+    const name=art?`${art.dealText} · ${art.type} · ${art.short}`:`매물번호: ${no}`;
+    rows+=`<div style="background:#242836;border-radius:8px;padding:10px;margin-bottom:6px;border-left:3px solid #eab308">
+<div style="font-size:13px;font-weight:700;color:#e8eaed;margin-bottom:4px">${i+1}. ${name}</div>
+<div style="font-size:12px;color:#9aa0b0;margin-bottom:2px">📞 ${wd.phone||'미입력'}</div>
+<div style="font-size:12px;color:#9aa0b0;margin-bottom:4px;white-space:pre-wrap">📝 ${wd.memo||'미입력'}</div>
+<div style="display:flex;gap:6px">
+<button onclick="editWishItem('${no}','phone')" style="padding:4px 10px;border:1px solid #475569;border-radius:4px;background:#1a1d27;color:#4f8cff;font-size:11px;cursor:pointer">📞수정</button>
+<button onclick="editWishItem('${no}','memo')" style="padding:4px 10px;border:1px solid #475569;border-radius:4px;background:#1a1d27;color:#4f8cff;font-size:11px;cursor:pointer">📝수정</button>
+${art?`<button onclick="document.getElementById('wish-list-overlay').remove();fo('${no}')" style="padding:4px 10px;border:1px solid #475569;border-radius:4px;background:#1a1d27;color:#22c55e;font-size:11px;cursor:pointer">🗺지도</button>`:''}
+<button onclick="if(confirm('삭제?')){removeWish('${no}');openWishList()}" style="padding:4px 10px;border:1px solid #475569;border-radius:4px;background:#1a1d27;color:#ef4444;font-size:11px;cursor:pointer">삭제</button>
+</div></div>`;
+  });
+  overlay.innerHTML=`<div style="width:90vw;max-width:500px;max-height:85vh;background:#1a1d27;border:2px solid #eab308;border-radius:14px;padding:16px;display:flex;flex-direction:column" onclick="event.stopPropagation()">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<div style="color:#eab308;font-size:16px;font-weight:700">⭐ 관심매물 ${keys.length}건</div>
+<button onclick="document.getElementById('wish-list-overlay').remove()" style="background:none;border:none;color:#9aa0b0;font-size:20px;cursor:pointer">✕</button></div>
+<div style="flex:1;overflow-y:auto">${rows}</div>
+</div>`;
+  document.body.appendChild(overlay);
+}
+function editWishItem(no,field){
+  const w=getWish();const wd=w[no]||{};
+  const label=field==='phone'?'📞 전화번호 수정':'📝 메모 수정';
+  const isMulti=field==='memo';
+  // 오버레이 닫고 입력창 열기
+  const wishOverlay=document.getElementById('wish-list-overlay');
+  if(wishOverlay)wishOverlay.remove();
+  // 임시 hidden input
+  let tmp=document.getElementById('tmp-edit');if(tmp)tmp.remove();
+  tmp=document.createElement('input');tmp.type='hidden';tmp.id='tmp-edit';tmp.value=wd[field]||'';
+  document.body.appendChild(tmp);
+  openBigInput('tmp-edit','tmp-edit',label,isMulti);
+  // 원래 closeBigInput 을 오버라이드
+  const origClose=closeBigInput;
+  window.closeBigInput=function(save,tid,bid){
+    if(save){
+      const val=document.getElementById('big-input-field').value;
+      w[no]=w[no]||{};w[no][field]=val;setWish(w);updWishCount();
+    }
+    const ov=document.getElementById('big-input-overlay');if(ov)ov.remove();
+    tmp=document.getElementById('tmp-edit');if(tmp)tmp.remove();
+    window.closeBigInput=origClose;
+    openWishList();
+  };
+}
 
 // 중복 그룹핑 (좌표 30m 이내 + 같은 종류)
 function grp(items){
@@ -306,7 +405,7 @@ ${a.feat!=='-'?`<div class="fe">"${a.feat}"</div>`:''}
 function render(){const d=gf();document.getElementById('fc').textContent=`${d.length}건 (전체 ${D.length})`;
 mg.clearLayers();d.forEach(a=>{if(!a.lat||!a.lon)return;const m=L.marker([a.lat,a.lon],{icon:ic(a)}).bindPopup(pp(a),{maxWidth:320});m._no=a.no;
 m.on('click',function(){scrollTo2(a.no)});mg.addLayer(m);mk[a.no]=m});
-if(d.length>0&&mg.getLayers().length>0)map.fitBounds(mg.getBounds().pad(0.1));
+if(!mapSyncEnabled&&d.length>0&&mg.getLayers().length>0)map.fitBounds(mg.getBounds().pad(0.1));
 const ls=document.getElementById('al');
 if(!d.length){ls.innerHTML='<div style="padding:40px;text-align:center;color:var(--tx2)">매물 없음</div>';return}
 const gs=grp(d);let h='';
