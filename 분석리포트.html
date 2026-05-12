@@ -31,18 +31,18 @@ tr:hover{background:var(--sf2)}
 <h1>📊 매물 <span>분석리포트</span></h1>
 <div style="display:flex;align-items:center;gap:12px;">
 <a href="매물지도보드.html">🗺️ 지도보드</a>
-<span style="font-size:12px;color:var(--tx2)">2026-05-12 11:44</span>
+<span style="font-size:12px;color:var(--tx2)">2026-05-12 11:52</span>
 </div></div>
 
 <div class="wrap">
 
 <div class="cards">
-<div class="card"><div class="n">5341</div><div class="l">활성 매물</div></div>
-<div class="card nw"><div class="n">136</div><div class="l">🆕 오늘 신규</div></div>
+<div class="card"><div class="n">5373</div><div class="l">활성 매물</div></div>
+<div class="card nw"><div class="n">168</div><div class="l">🆕 오늘 신규</div></div>
 <div class="card ch"><div class="n">0</div><div class="l">💰 가격변동</div></div>
 <div class="card rm"><div class="n">0</div><div class="l">❌ 삭제</div></div>
-<div class="card"><div class="n">57억 148만</div><div class="l">평균 매매가</div></div>
-<div class="card"><div class="n">15</div><div class="l">수집 지역</div></div>
+<div class="card"><div class="n">57억 2,458만</div><div class="l">평균 매매가</div></div>
+<div class="card"><div class="n">16</div><div class="l">수집 지역</div></div>
 </div>
 
 <div class="row">
@@ -69,7 +69,7 @@ tr:hover{background:var(--sf2)}
 </div>
 
 <div class="panel" style="margin-bottom:24px"><h2>🕐 최근 수집 이력</h2>
-<table><tr><th>시각</th><th>지역</th><th>수집</th><th>신규</th><th>변동</th><th>삭제</th></tr><tr><td>2026-05-12 11:42</td><td>고기동</td><td>159</td><td>136</td><td>0</td><td>0</td></tr><tr><td>2026-05-11 12:20</td><td>수지구</td><td>243</td><td>243</td><td>0</td><td>0</td></tr><tr><td>2026-05-09 15:46</td><td>동천동</td><td>430</td><td>374</td><td>0</td><td>0</td></tr><tr><td>2026-05-09 14:45</td><td>풍덕천동</td><td>94</td><td>45</td><td>0</td><td>0</td></tr><tr><td>2026-05-09 14:40</td><td>동천동</td><td>72</td><td>71</td><td>0</td><td>0</td></tr><tr><td>2026-05-08 11:38</td><td>풍덕천동</td><td>90</td><td>89</td><td>0</td><td>0</td></tr><tr><td>2026-05-08 10:39</td><td>동천동</td><td>358</td><td>306</td><td>1</td><td>0</td></tr><tr><td>2026-04-30 17:52</td><td>강북구</td><td>47</td><td>47</td><td>0</td><td>0</td></tr><tr><td>2026-04-30 17:45</td><td>강동구</td><td>152</td><td>152</td><td>0</td><td>0</td></tr><tr><td>2026-04-30 17:40</td><td>은평구</td><td>93</td><td>93</td><td>0</td><td>0</td></tr></table>
+<table><tr><th>시각</th><th>지역</th><th>수집</th><th>신규</th><th>변동</th><th>삭제</th></tr><tr><td>2026-05-12 11:51</td><td>분당_금곡동</td><td>32</td><td>32</td><td>0</td><td>0</td></tr><tr><td>2026-05-12 11:42</td><td>고기동</td><td>159</td><td>136</td><td>0</td><td>0</td></tr><tr><td>2026-05-11 12:20</td><td>수지구</td><td>243</td><td>243</td><td>0</td><td>0</td></tr><tr><td>2026-05-09 15:46</td><td>동천동</td><td>430</td><td>374</td><td>0</td><td>0</td></tr><tr><td>2026-05-09 14:45</td><td>풍덕천동</td><td>94</td><td>45</td><td>0</td><td>0</td></tr><tr><td>2026-05-09 14:40</td><td>동천동</td><td>72</td><td>71</td><td>0</td><td>0</td></tr><tr><td>2026-05-08 11:38</td><td>풍덕천동</td><td>90</td><td>89</td><td>0</td><td>0</td></tr><tr><td>2026-05-08 10:39</td><td>동천동</td><td>358</td><td>306</td><td>1</td><td>0</td></tr><tr><td>2026-04-30 17:52</td><td>강북구</td><td>47</td><td>47</td><td>0</td><td>0</td></tr><tr><td>2026-04-30 17:45</td><td>강동구</td><td>152</td><td>152</td><td>0</td><td>0</td></tr></table>
 </div>
 
 <div class="meta">매물DB.sqlite 기준 · 크롤링 후 이 리포트를 재생성하면 최신 데이터로 갱신됩니다</div>
@@ -79,13 +79,13 @@ tr:hover{background:var(--sf2)}
 const CO={responsive:true,plugins:{legend:{display:false}}};
 const CC=['#4f8cff','#22c55e','#f59e0b','#ef4444','#a78bfa','#ec4899','#06b6d4','#84cc16','#f97316','#6366f1'];
 
-new Chart(document.getElementById('c1'),{type:'bar',data:{labels:["동천동", "모현읍", "이동읍", "수지", "포곡읍", "남사읍", "강남구", "수지구", "강서구", "고기동", "강동구", "풍덕천동", "은평구", "구로구", "강북구"],datasets:[{data:[1128, 816, 683, 481, 475, 415, 266, 243, 175, 159, 152, 134, 93, 74, 47],backgroundColor:CC}]},options:{...CO,indexAxis:'y'}});
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:["동천동", "모현읍", "이동읍", "수지", "포곡읍", "남사읍", "강남구", "수지구", "강서구", "고기동", "강동구", "풍덕천동", "은평구", "구로구", "강북구", "분당_금곡동"],datasets:[{data:[1128, 816, 683, 481, 475, 415, 266, 243, 175, 159, 152, 134, 93, 74, 47, 32],backgroundColor:CC}]},options:{...CO,indexAxis:'y'}});
 
-new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:["E03", "공장/창고", "아파트", "사무실", "고시원", "지식산업센터", "공장/창고", "건물", "A06", "토지", "재건축", "Z00", "오피스텔분양권"],datasets:[{data:[2732, 831, 694, 564, 204, 119, 76, 64, 34, 13, 5, 4, 1],backgroundColor:CC}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{color:'#e8eaed',font:{size:12}}}}}});
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:["E03", "공장/창고", "아파트", "사무실", "고시원", "지식산업센터", "공장/창고", "건물", "A06", "토지", "재건축", "Z00", "오피스텔분양권"],datasets:[{data:[2763, 831, 695, 564, 204, 119, 76, 64, 34, 13, 5, 4, 1],backgroundColor:CC}]},options:{responsive:true,plugins:{legend:{position:'right',labels:{color:'#e8eaed',font:{size:12}}}}}});
 
-new Chart(document.getElementById('c3'),{type:'bar',data:{labels:["5억 미만", "5~10억", "10~20억", "20~50억", "50~100억", "100억 이상"],datasets:[{data:[461, 614, 1528, 958, 433, 457],backgroundColor:'#4f8cff'}]},options:CO});
+new Chart(document.getElementById('c3'),{type:'bar',data:{labels:["5억 미만", "5~10억", "10~20억", "20~50억", "50~100억", "100억 이상"],datasets:[{data:[461, 614, 1535, 968, 438, 467],backgroundColor:'#4f8cff'}]},options:CO});
 
-new Chart(document.getElementById('c4'),{type:'bar',data:{labels:["100평 미만", "100~300평", "300~500평", "500~1000평", "1000~3000평", "3000평 이상"],datasets:[{data:[373, 924, 510, 617, 620, 738],backgroundColor:'#22c55e'}]},options:CO});
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:["100평 미만", "100~300평", "300~500평", "500~1000평", "1000~3000평", "3000평 이상"],datasets:[{data:[374, 931, 516, 626, 625, 741],backgroundColor:'#22c55e'}]},options:CO});
 
-new Chart(document.getElementById('c5'),{type:'bar',data:{labels:["동천동", "모현읍", "이동읍", "수지", "포곡읍", "남사읍", "강남구", "수지구", "강서구", "고기동", "강동구", "풍덕천동", "은평구", "구로구", "강북구"],datasets:[{data:[177652, 3982877, 15982244, 31472324, 10388906, 3119428, 151349037, 1850171, 24741060, 7247844, 35068827, 52490471, 35427038, 27545506, 26988678].map(v=>Math.round(v/10000)),backgroundColor:'#f59e0b'}]},options:{...CO,scales:{y:{title:{display:true,text:'만원/평',color:'#9aa0b0'}}}}});
+new Chart(document.getElementById('c5'),{type:'bar',data:{labels:["동천동", "모현읍", "이동읍", "수지", "포곡읍", "남사읍", "강남구", "수지구", "강서구", "고기동", "강동구", "풍덕천동", "은평구", "구로구", "강북구", "분당_금곡동"],datasets:[{data:[177652, 3982877, 15982244, 31472324, 10388906, 3119428, 151349037, 1850171, 24741060, 7247844, 35068827, 52490471, 35427038, 27545506, 26988678, 13146673].map(v=>Math.round(v/10000)),backgroundColor:'#f59e0b'}]},options:{...CO,scales:{y:{title:{display:true,text:'만원/평',color:'#9aa0b0'}}}}});
 </script></body></html>
